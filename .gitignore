@@ -103,3 +103,8 @@ _CPack_Packages/
 #packages
 *.tar.gz
 *.zip
+
+build/
+dist/
+cmake-configure.log
+
