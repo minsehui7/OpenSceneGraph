@@ -484,8 +484,7 @@ void RenderBin::drawImplementation(osg::RenderInfo& renderInfo,RenderLeaf*& prev
                 ++dw_itr)
             {
                 RenderLeaf* rl = dw_itr->get();
-                rl->render(renderInfo,previous);
-                previous = rl;
+                rl->render(renderInfo,previous);                previous = rl;
 
             }
         }
