@@ -12,7 +12,10 @@
 */
 #include <osgUtil/RenderLeaf>
 #include <osgUtil/StateGraph>
+#include <osg/BlendFunc>
+#include <osg/ColorMask>
 #include <osg/Notify>
+#include <osg/Program>
 
 #include <cstdlib>
 #include <map>
@@ -110,6 +113,26 @@ void RenderLeaf::render(osg::RenderInfo& renderInfo,RenderLeaf* previous)
                    << " cb=" << (dr ? dr->getDrawCallback() : 0)
                    << " depth=" << _depth
                    << std::endl;
+
+        const osg::StateSet* dss = dr ? dr->getStateSet() : 0;
+        if (dss)
+        {
+            const osg::Program* p = dynamic_cast<const osg::Program*>(
+                dss->getAttribute(osg::StateAttribute::PROGRAM));
+            const osg::ColorMask* cm = dynamic_cast<const osg::ColorMask*>(
+                dss->getAttribute(osg::StateAttribute::COLORMASK));
+            const osg::BlendFunc* bf = dynamic_cast<const osg::BlendFunc*>(
+                dss->getAttribute(osg::StateAttribute::BLENDFUNC));
+            OSG_NOTICE << "[HLDBG] drawable-ss program=" << p
+                       << " colormask=" << cm
+                       << " blendfunc=" << bf
+                       << " blendMode=0x" << std::hex << dss->getMode(GL_BLEND) << std::dec
+                       << std::endl;
+        }
+        else
+        {
+            OSG_NOTICE << "[HLDBG] drawable-ss <null>" << std::endl;
+        }
     };
 
     // don't draw this leaf if the abort rendering flag has been set.
